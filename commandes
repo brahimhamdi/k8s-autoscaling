@@ -1,0 +1,12 @@
+#Installer metrics server (fichier d'origine https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml)
+kubectl apply -f components.yaml
+
+#Appliquer le fichier autoscale-apache.yaml pour créer le Deployment, le service et la HPA
+kubectl apply -f autoscale-apache.yaml
+
+#Vérifier (sur un autre terminal)
+watch kubectl get all -o wide
+
+#Génerer le trafic
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+
